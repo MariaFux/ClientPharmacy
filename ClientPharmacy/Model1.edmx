@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище pharmacyModel" Provider="Npgsql" ProviderManifestToken="10.6" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="medicines">
+          <Key>
+            <PropertyRef Name="id_medicine" />
+          </Key>
+          <Property Name="id_medicine" Type="int8" Nullable="false" />
+          <Property Name="pharmacy" Type="int8" Nullable="false" />
+          <Property Name="name_medicine" Type="varchar" MaxLength="225" Nullable="false" />
+          <Property Name="symptoms" Type="varchar" MaxLength="225" />
+          <Property Name="count" Type="int8" />
+          <Property Name="price" Type="int8" Nullable="false" />
+        </EntityType>
+        <EntityType Name="pharmacy_list">
+          <Key>
+            <PropertyRef Name="id_pharmacy" />
+          </Key>
+          <Property Name="id_pharmacy" Type="int8" Nullable="false" />
+          <Property Name="name_pharmacy" Type="varchar" MaxLength="225" Nullable="false" />
+          <Property Name="address" Type="varchar" MaxLength="225" Nullable="false" />
+          <Property Name="phone_number" Type="varchar" MaxLength="225" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_pharmacy">
+          <End Role="pharmacy_list" Type="Self.pharmacy_list" Multiplicity="1" />
+          <End Role="medicines" Type="Self.medicines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pharmacy_list">
+              <PropertyRef Name="id_pharmacy" />
+            </Principal>
+            <Dependent Role="medicines">
+              <PropertyRef Name="pharmacy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище pharmacyModelContainer">
+          <EntitySet Name="medicines" EntityType="Self.medicines" Schema="public" store:Type="Tables" />
+          <EntitySet Name="pharmacy_list" EntityType="Self.pharmacy_list" Schema="public" store:Type="Tables" />
+          <AssociationSet Name="fk_pharmacy" Association="Self.fk_pharmacy">
+            <End Role="pharmacy_list" EntitySet="pharmacy_list" />
+            <End Role="medicines" EntitySet="medicines" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="pharmacyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="medicines">
+          <Key>
+            <PropertyRef Name="id_medicine" />
+          </Key>
+          <Property Name="id_medicine" Type="Int64" Nullable="false" />
+          <Property Name="pharmacy" Type="Int64" Nullable="false" />
+          <Property Name="name_medicine" Type="String" MaxLength="225" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="symptoms" Type="String" MaxLength="225" FixedLength="false" Unicode="true" />
+          <Property Name="count" Type="Int64" />
+          <Property Name="price" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="pharmacy_list" Relationship="Self.fk_pharmacy" FromRole="medicines" ToRole="pharmacy_list" />
+        </EntityType>
+        <EntityType Name="pharmacy_list">
+          <Key>
+            <PropertyRef Name="id_pharmacy" />
+          </Key>
+          <Property Name="id_pharmacy" Type="Int64" Nullable="false" />
+          <Property Name="name_pharmacy" Type="String" MaxLength="225" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="225" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone_number" Type="String" MaxLength="225" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="medicines" Relationship="Self.fk_pharmacy" FromRole="pharmacy_list" ToRole="medicines" />
+        </EntityType>
+        <Association Name="fk_pharmacy">
+          <End Role="pharmacy_list" Type="Self.pharmacy_list" Multiplicity="1" />
+          <End Role="medicines" Type="Self.medicines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pharmacy_list">
+              <PropertyRef Name="id_pharmacy" />
+            </Principal>
+            <Dependent Role="medicines">
+              <PropertyRef Name="pharmacy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="pharmacyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="medicines" EntityType="Self.medicines" />
+          <EntitySet Name="pharmacy_list" EntityType="Self.pharmacy_list" />
+          <AssociationSet Name="fk_pharmacy" Association="Self.fk_pharmacy">
+            <End Role="pharmacy_list" EntitySet="pharmacy_list" />
+            <End Role="medicines" EntitySet="medicines" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище pharmacyModelContainer" CdmEntityContainer="pharmacyEntities">
+          <EntitySetMapping Name="medicines">
+            <EntityTypeMapping TypeName="pharmacyModel.medicines">
+              <MappingFragment StoreEntitySet="medicines">
+                <ScalarProperty Name="id_medicine" ColumnName="id_medicine" />
+                <ScalarProperty Name="pharmacy" ColumnName="pharmacy" />
+                <ScalarProperty Name="name_medicine" ColumnName="name_medicine" />
+                <ScalarProperty Name="symptoms" ColumnName="symptoms" />
+                <ScalarProperty Name="count" ColumnName="count" />
+                <ScalarProperty Name="price" ColumnName="price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pharmacy_list">
+            <EntityTypeMapping TypeName="pharmacyModel.pharmacy_list">
+              <MappingFragment StoreEntitySet="pharmacy_list">
+                <ScalarProperty Name="id_pharmacy" ColumnName="id_pharmacy" />
+                <ScalarProperty Name="name_pharmacy" ColumnName="name_pharmacy" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
